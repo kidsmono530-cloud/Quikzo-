@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#FFCD00" />
+  <g fill="#0F0F0F">
+    <!-- Speed line 1 (Top) -->
+    <rect x="74" y="193" width="115" height="27" rx="13.5" />
+    <!-- Speed line 2 (Middle - Longest) -->
+    <rect x="42" y="238" width="150" height="27" rx="13.5" />
+    <!-- Speed line 3 (Bottom) -->
+    <rect x="74" y="283" width="105" height="27" rx="13.5" />
+
+    <!-- Q Ring & Tail via path with evenodd fill -->
+    <path fill-rule="evenodd" d="
+      M 280 102
+      A 148 148 0 1 1 200 376
+      L 346 376
+      L 424 376
+      L 308 250
+      L 230 250
+      A 84 84 0 1 1 280 166
+      A 84 84 0 0 1 364 250
+      C 364 274 354 296 337 312
+      L 408 376
+      A 148 148 0 0 0 280 102
+      Z
+    " />
+  </g>
+</svg>

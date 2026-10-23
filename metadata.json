@@ -1,0 +1,6 @@
+{
+  "name": "Quikzo - Fast Shopping, Faster Delivery!",
+  "description": "Quikzo - Premium quick-commerce grocery shopping platform with Indian Rupee (₹) pricing, 10-15 min delivery, category discovery, recipes, live order tracking, and a secure Admin & Delivery fleet dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
