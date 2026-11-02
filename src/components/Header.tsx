@@ -9,11 +9,11 @@ import {
   Search,
   MapPin,
   ChevronDown,
-  User,
   Clock,
   X,
-  Plus
+  Package
 } from 'lucide-react';
+import { QuikzoLogo } from './QuikzoLogo';
 
 interface HeaderProps {
   onOpenLocationModal: () => void;
@@ -41,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isSearching, setIsSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchRefMobile = useRef<HTMLDivElement>(null);
 
   // Debounced search
   useEffect(() => {
@@ -54,14 +55,14 @@ export const Header: React.FC<HeaderProps> = ({
       setIsSearching(true);
       try {
         const results = await getProducts({ search: searchQuery.trim() });
-        setSearchResults(results.slice(0, 8));
+        setSearchResults(results.slice(0, 6));
         setShowDropdown(true);
       } catch (e) {
-        console.error(e);
+        console.error('Search error', e);
       } finally {
         setIsSearching(false);
       }
-    }, 200);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -69,7 +70,11 @@ export const Header: React.FC<HeaderProps> = ({
   // Click outside and Escape to close search dropdown
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        (searchRef.current && !searchRef.current.contains(target)) &&
+        (searchRefMobile.current && !searchRefMobile.current.contains(target))
+      ) {
         setShowDropdown(false);
       }
     };
@@ -90,70 +95,40 @@ export const Header: React.FC<HeaderProps> = ({
     ? `${selectedAddress.houseNumber}, ${selectedAddress.city} - ${selectedAddress.pincode}`
     : 'Indiranagar, Bengaluru - 560001';
 
-  const userAvatar = user?.avatar || user?.profileImage;
-
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#E8E2D9] shadow-xs">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
-        <div className="flex items-center justify-between gap-2 sm:gap-4">
-          {/* Left: Circular Customer Profile Photo (Replaces Logo & Name) */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+    <header className="sticky top-0 z-40 bg-white border-b border-gray-200/90 shadow-2xs">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-5 lg:px-6 py-2 sm:py-3">
+        {/* ============================================================== */}
+        {/* DESKTOP HEADER (MD & ABOVE)                                   */}
+        {/* ============================================================== */}
+        <div className="hidden md:flex items-center justify-between gap-4">
+          {/* Left: Quikzo Logo & Delivery Location Picker */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
-              onClick={() => {
-                if (user) {
-                  onNavigateAccount();
-                } else {
-                  onOpenAuthModal();
-                }
-              }}
-              className="relative group focus:outline-hidden cursor-pointer active:scale-95 transition-transform"
-              title={user ? `${user.name} - View Account / Profile` : 'Sign In / Account'}
-              aria-label="Customer Profile"
+              onClick={onNavigateHome}
+              className="text-left cursor-pointer focus:outline-hidden"
+              title="Quikzo Home"
             >
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-[#159F83] bg-[#DDF4EA] shadow-xs flex items-center justify-center transition-all group-hover:border-[#128a71]">
-                {userAvatar ? (
-                  <img
-                    src={userAvatar}
-                    alt={user?.name || 'Profile'}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : user ? (
-                  <span className="text-sm sm:text-base font-black text-[#202824] uppercase">
-                    {user.name.slice(0, 1)}
-                  </span>
-                ) : (
-                  <User className="w-5 h-5 text-[#202824]" />
-                )}
-              </div>
-
-              {/* Add Photo / Status indicator badge */}
-              {!userAvatar && (
-                <span
-                  className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#159F83] text-white flex items-center justify-center text-[10px] font-black border-2 border-white shadow-2xs"
-                  title="Add Profile Photo"
-                >
-                  <Plus className="w-2.5 h-2.5 stroke-[3]" />
-                </span>
-              )}
+              <QuikzoLogo size="sm" showTagline={false} />
             </button>
 
-            {/* Delivery Location Picker (Beside profile photo on desktop) */}
+            {/* Delivery Location Picker */}
             <button
               type="button"
               onClick={onOpenLocationModal}
-              className="hidden md:flex items-center gap-2 text-left px-2.5 py-1.5 rounded-xl border border-[#E8E2D9] hover:border-[#159F83] hover:bg-[#DDF4EA]/40 transition-all text-xs"
+              className="flex items-center gap-2 text-left px-2.5 py-1.5 rounded-xl border border-gray-200 hover:border-[#FFCD00] hover:bg-amber-50/40 transition-all text-xs"
             >
-              <div className="w-6 h-6 rounded-lg bg-[#DDF4EA] text-[#159F83] flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-lg bg-[#FFCD00] text-[#0B0B0B] flex items-center justify-center shrink-0 font-black shadow-2xs">
                 <MapPin className="w-3.5 h-3.5" />
               </div>
               <div className="max-w-[170px]">
-                <div className="flex items-center gap-1 font-bold text-[#202824]">
-                  <Clock className="w-3 h-3 text-[#159F83]" />
+                <div className="flex items-center gap-1 font-black text-[#0B0B0B]">
+                  <Clock className="w-3 h-3 text-[#0B0B0B]" />
                   <span>{settings?.estimatedDeliveryMinutes || '10-15 mins'}</span>
-                  <ChevronDown className="w-3 h-3 text-gray-400" />
+                  <ChevronDown className="w-3 h-3 text-gray-500" />
                 </div>
-                <div className="text-gray-500 truncate text-[11px]">
+                <div className="text-gray-500 truncate text-[11px] font-medium">
                   {displayLocation}
                 </div>
               </div>
@@ -161,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Center: Wide Rounded Search Bar */}
-          <div ref={searchRef} className="relative flex-1 max-w-xl mx-1 sm:mx-2">
+          <div ref={searchRef} className="relative flex-1 max-w-xl mx-2">
             <div className="relative flex items-center">
               <Search className="w-4 h-4 text-gray-400 absolute left-3.5 pointer-events-none" />
               <input
@@ -171,8 +146,8 @@ export const Header: React.FC<HeaderProps> = ({
                 onFocus={() => {
                   if (searchResults.length > 0) setShowDropdown(true);
                 }}
-                placeholder="Search for milk, oil, biscuits, atta, chips..."
-                className="w-full pl-10 pr-9 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#FFFBF7] hover:bg-gray-100/70 focus:bg-white border border-[#E8E2D9] rounded-2xl focus:outline-hidden focus:border-[#159F83] focus:ring-2 focus:ring-[#DDF4EA] transition-all placeholder:text-gray-400 shadow-2xs"
+                placeholder="Search for milk, atta, oil, biscuits, snacks..."
+                className="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100/70 focus:bg-white border border-gray-200 rounded-2xl focus:outline-hidden focus:border-[#FFCD00] focus:ring-2 focus:ring-[#FFCD00]/20 transition-all placeholder:text-gray-400 text-[#0B0B0B] font-medium"
               />
               {searchQuery && (
                 <button
@@ -191,17 +166,17 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Live Search Suggestions Dropdown */}
             {showDropdown && (
-              <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-[#E8E2D9] overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                <div className="p-2 border-b border-gray-50 flex items-center justify-between text-xs text-gray-500 font-semibold px-3 bg-[#FFF8EF]">
+              <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="p-2 border-b border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold px-3 bg-gray-50">
                   <span>Search Suggestions</span>
-                  {isSearching && <span className="text-[#159F83]">Searching...</span>}
+                  {isSearching && <span className="text-[#0B0B0B] font-bold">Searching...</span>}
                 </div>
                 {searchResults.length === 0 ? (
                   <div className="p-5 text-center text-xs text-gray-500">
                     No grocery items found for "{searchQuery}"
                   </div>
                 ) : (
-                  <div className="divide-y divide-gray-50 max-h-[300px] overflow-y-auto">
+                  <div className="divide-y divide-gray-100 max-h-[300px] overflow-y-auto">
                     {searchResults.map((product) => (
                       <div
                         key={product.id}
@@ -210,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({
                           setSearchQuery('');
                           onSelectProduct(product);
                         }}
-                        className="flex items-center gap-3 p-2.5 sm:p-3 hover:bg-[#DDF4EA]/50 cursor-pointer transition-colors"
+                        className="flex items-center gap-3 p-2.5 sm:p-3 hover:bg-amber-50/50 cursor-pointer transition-colors"
                       >
                         <img
                           src={product.image}
@@ -219,9 +194,9 @@ export const Header: React.FC<HeaderProps> = ({
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-[10px] text-gray-400 font-medium">{product.brand} • {product.weight}</p>
-                          <p className="text-xs font-bold text-[#202824] truncate">{product.name}</p>
+                          <p className="text-xs font-bold text-[#0B0B0B] truncate">{product.name}</p>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-xs font-bold text-[#202824] font-mono">
+                            <span className="text-xs font-bold text-[#0B0B0B] font-mono">
                               {formatINR(product.sellingPrice)}
                             </span>
                             {product.mrp > product.sellingPrice && (
@@ -231,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
                             )}
                           </div>
                         </div>
-                        <span className="text-[11px] font-extrabold text-[#159F83] px-2.5 py-1 bg-[#DDF4EA] rounded-lg shrink-0">
+                        <span className="text-[11px] font-extrabold text-[#0B0B0B] px-2.5 py-1 bg-[#FFCD00] rounded-lg shrink-0 shadow-2xs">
                           View
                         </span>
                       </div>
@@ -242,57 +217,169 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </div>
 
-          {/* Right Action: Shopping Cart Button & Orders */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Right Action: My Orders, Yellow Cart Button (Icon only with item count badge) */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* My Orders Button */}
             <button
               type="button"
               onClick={onNavigateOrders}
-              className="hidden sm:inline-flex items-center px-2.5 py-2 text-xs font-bold text-gray-700 hover:text-[#159F83] hover:bg-[#DDF4EA]/50 rounded-xl transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 hover:text-black hover:bg-gray-100 rounded-xl transition-colors border border-gray-200"
             >
-              My Orders
+              <Package className="w-3.5 h-3.5 text-gray-600" />
+              <span>My Orders</span>
             </button>
 
-            {/* Shopping Cart Icon */}
+            {/* Bright Yellow Shopping Cart Button - Icon only with badge */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 bg-[#159F83] hover:bg-[#128a71] text-white rounded-xl shadow-xs transition-all active:scale-95 font-black text-xs"
+              className="relative w-10 h-10 rounded-xl bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] flex items-center justify-center shadow-xs transition-all active:scale-95 border border-amber-300"
               aria-label="View Shopping Cart"
+              title="Shopping Cart"
             >
-              <div className="relative">
-                <ShoppingBag className="w-4 h-4 text-white" />
-                {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#159F83] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs border border-white">
-                    {itemCount}
-                  </span>
-                )}
-              </div>
-              <span className="font-mono font-black text-xs">
-                {itemCount > 0 ? formatINR(subtotal) : 'Cart'}
-              </span>
+              <ShoppingBag className="w-5 h-5 text-[#0B0B0B] stroke-[2.5]" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-[#0B0B0B] text-[#FFCD00] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-xs border border-white">
+                  {itemCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Location & Orders Quick Bar */}
-        <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between text-xs md:hidden">
-          <button
-            type="button"
-            onClick={onOpenLocationModal}
-            className="flex items-center gap-1.5 text-gray-700 truncate max-w-[75%]"
-          >
-            <MapPin className="w-3.5 h-3.5 text-[#159F83] shrink-0" />
-            <span className="font-bold text-[#202824] shrink-0">10-15 mins:</span>
-            <span className="text-gray-500 truncate">{displayLocation}</span>
-            <ChevronDown className="w-3 h-3 text-gray-400 shrink-0" />
-          </button>
-          <button
-            type="button"
-            onClick={onNavigateOrders}
-            className="text-[#159F83] font-extrabold shrink-0 text-[11px] bg-[#DDF4EA] px-2.5 py-1 rounded-lg"
-          >
-            My Orders
-          </button>
+        {/* ============================================================== */}
+        {/* MOBILE HEADER (SM & BELOW) - NEVER CRUSHED OR OVERFLOWING     */}
+        {/* ============================================================== */}
+        <div className="md:hidden space-y-2">
+          {/* Row 1: Logo (Left) and Yellow Cart Button (Right) */}
+          <div className="flex items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={onNavigateHome}
+              className="text-left cursor-pointer focus:outline-hidden"
+              title="Quikzo Home"
+            >
+              <QuikzoLogo size="sm" showTagline={false} />
+            </button>
+
+            {/* Yellow Cart Button (Icon only with item count badge) */}
+            <button
+              type="button"
+              onClick={() => setIsCartOpen(true)}
+              className="relative w-9 h-9 rounded-xl bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] flex items-center justify-center shadow-2xs transition-all active:scale-95 border border-amber-300"
+              aria-label="View Shopping Cart"
+              title="Shopping Cart"
+            >
+              <ShoppingBag className="w-4.5 h-4.5 text-[#0B0B0B] stroke-[2.5]" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-[#0B0B0B] text-[#FFCD00] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-2xs">
+                  {itemCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Row 2: Full-Width Search Bar */}
+          <div ref={searchRefMobile} className="relative w-full">
+            <div className="relative flex items-center">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (searchResults.length > 0) setShowDropdown(true);
+                }}
+                placeholder="Search for milk, atta, oil, biscuits, snacks..."
+                className="w-full pl-9 pr-8 py-2 text-xs bg-gray-50 hover:bg-gray-100/80 focus:bg-white border border-gray-200 rounded-xl focus:outline-hidden focus:border-[#FFCD00] focus:ring-2 focus:ring-[#FFCD00]/20 transition-all placeholder:text-gray-400 text-[#0B0B0B] font-medium"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSearchResults([]);
+                    setShowDropdown(false);
+                  }}
+                  className="absolute right-2.5 text-gray-400 hover:text-gray-600 p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Search Suggestions Dropdown */}
+            {showDropdown && (
+              <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden z-50">
+                <div className="p-2 border-b border-gray-100 flex items-center justify-between text-[11px] text-gray-500 font-semibold px-3 bg-gray-50">
+                  <span>Search Suggestions</span>
+                  {isSearching && <span className="text-[#0B0B0B] font-bold">Searching...</span>}
+                </div>
+                {searchResults.length === 0 ? (
+                  <div className="p-4 text-center text-xs text-gray-500">
+                    No items found for "{searchQuery}"
+                  </div>
+                ) : (
+                  <div className="divide-y divide-gray-100 max-h-[260px] overflow-y-auto">
+                    {searchResults.map((product) => (
+                      <div
+                        key={product.id}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          setSearchQuery('');
+                          onSelectProduct(product);
+                        }}
+                        className="flex items-center gap-2.5 p-2.5 hover:bg-amber-50/50 cursor-pointer transition-colors"
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-10 object-cover rounded-lg bg-gray-50 shrink-0 border border-gray-100"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] text-gray-400">{product.brand} • {product.weight}</p>
+                          <p className="text-xs font-bold text-[#0B0B0B] truncate">{product.name}</p>
+                          <span className="text-xs font-black text-[#0B0B0B] font-mono">
+                            {formatINR(product.sellingPrice)}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-black text-[#0B0B0B] px-2 py-1 bg-[#FFCD00] rounded-md shrink-0">
+                          View
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Row 3: Location ETA Strip & My Orders Shortcut */}
+          <div className="pt-1 flex items-center justify-between text-xs">
+            <button
+              type="button"
+              onClick={onOpenLocationModal}
+              className="flex items-center gap-1.5 text-gray-800 truncate max-w-[70%] active:opacity-75"
+            >
+              <div className="w-5 h-5 rounded-md bg-[#FFCD00] text-[#0B0B0B] flex items-center justify-center shrink-0">
+                <MapPin className="w-3 h-3 stroke-[2.5]" />
+              </div>
+              <span className="font-black text-[#0B0B0B] shrink-0 text-[11px]">
+                {settings?.estimatedDeliveryMinutes || '10-15 mins'}:
+              </span>
+              <span className="text-gray-500 truncate text-[11px] font-medium">{displayLocation}</span>
+              <ChevronDown className="w-3 h-3 text-gray-400 shrink-0" />
+            </button>
+
+            <button
+              type="button"
+              onClick={onNavigateOrders}
+              className="text-[#0B0B0B] font-bold shrink-0 text-[11px] bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded-lg flex items-center gap-1 border border-gray-200 transition-colors"
+            >
+              <Package className="w-3 h-3 text-gray-600" />
+              <span>My Orders</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>

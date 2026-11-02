@@ -122,16 +122,14 @@ export const QuikzoAssistant: React.FC<QuikzoAssistantProps> = ({ onSelectProduc
             setIsOpen(true);
             setIsMinimized(false);
           }}
-          className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 z-40 transition-all duration-300 hover:scale-105 group border-2 border-black/10"
+          className="fixed bottom-16 sm:bottom-6 right-3 sm:right-6 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#FFCC00] hover:bg-[#E6B800] text-[#0B0B0B] shadow-md flex items-center justify-center z-30 transition-all duration-200 active:scale-95 border border-amber-300"
           aria-label="Open Quikzo Assistant"
+          title="Quikzo Assistant"
         >
-          <div className="relative">
-            <div className="bg-black text-yellow-400 p-2 rounded-full group-hover:rotate-12 transition-transform">
-              <Bot className="w-5 h-5" />
-            </div>
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
+          <div className="relative flex items-center justify-center">
+            <Bot className="w-5 h-5 text-[#0B0B0B]" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border border-white rounded-full animate-pulse"></span>
           </div>
-          <span className="hidden sm:inline text-sm font-extrabold tracking-wide">Quikzo Assistant</span>
         </button>
       )}
 

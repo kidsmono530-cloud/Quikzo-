@@ -247,34 +247,34 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#0A192F] flex flex-col justify-between selection:bg-orange-100 selection:text-orange-900">
+    <div className="min-h-screen bg-white text-[#0B0B0B] flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900">
       {/* Top Banner Notice */}
-      <div className="bg-gradient-to-r from-[#FF6B00] via-[#FF8500] to-[#FFC700] text-[#0A192F] py-2 px-4 text-center text-xs font-bold shadow-xs">
+      <div className="bg-[#FFCD00] text-[#0B0B0B] py-2 px-4 text-center text-xs font-black shadow-2xs border-b border-amber-300">
         <span className="inline-flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 fill-[#0A192F]" />
-          <span>Superfast 10-15 Min Delivery • Get ₹100 OFF on your first order!</span>
+          <Sparkles className="w-3.5 h-3.5 fill-[#0B0B0B]" />
+          <span>⚡ Lightning 10-15 Min Grocery Delivery • Welcome to Quikzo!</span>
         </span>
       </div>
 
       {/* Main Login Container */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div className="w-full max-w-md bg-white border border-gray-100 rounded-3xl shadow-xl shadow-gray-200/50 p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-400">
+        <div className="w-full max-w-md bg-white border border-gray-200 rounded-3xl shadow-xl shadow-gray-200/50 p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-400">
           
           {/* Logo Header */}
           <div className="flex flex-col items-center text-center space-y-2">
             <QuikzoLogo size="lg" showTagline={false} />
             <div className="pt-2">
-              <h1 className="text-2xl font-black text-[#0A192F] tracking-tight">
+              <h1 className="text-2xl font-black text-[#0B0B0B] tracking-tight">
                 Welcome to Quikzo
               </h1>
               <p className="text-xs text-gray-500 font-medium mt-0.5">
-                Your groceries, just a few taps away.
+                Fresh groceries delivered in 10-15 minutes
               </p>
             </div>
           </div>
 
           {/* Method Switcher Tabs */}
-          <div className="grid grid-cols-2 gap-1 p-1 bg-gray-100/80 rounded-2xl text-xs font-bold text-gray-600">
+          <div className="grid grid-cols-2 gap-1 p-1 bg-gray-100 rounded-2xl text-xs font-bold text-gray-600">
             <button
               type="button"
               onClick={() => {
@@ -283,11 +283,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
               }}
               className={`py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all ${
                 authMethod === 'email'
-                  ? 'bg-white text-[#0A192F] shadow-xs'
+                  ? 'bg-white text-[#0B0B0B] shadow-2xs font-black'
                   : 'hover:text-gray-900'
               }`}
             >
-              <Mail className="w-4 h-4 text-[#FF6B00]" />
+              <Mail className="w-4 h-4 text-[#0B0B0B]" />
               <span>Email &amp; Password</span>
             </button>
 
@@ -299,11 +299,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
               }}
               className={`py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all ${
                 authMethod === 'otp'
-                  ? 'bg-white text-[#0A192F] shadow-xs'
+                  ? 'bg-white text-[#0B0B0B] shadow-2xs font-black'
                   : 'hover:text-gray-900'
               }`}
             >
-              <Phone className="w-4 h-4 text-[#FF6B00]" />
+              <Phone className="w-4 h-4 text-[#0B0B0B]" />
               <span>Mobile OTP</span>
             </button>
           </div>
@@ -350,14 +350,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
 
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <label className="font-bold text-[#0A192F]">Password</label>
+                      <label className="font-bold text-[#0B0B0B]">Password</label>
                       <button
                         type="button"
                         onClick={() => {
                           setEmailSubView('forgot');
                           clearFeedback();
                         }}
-                        className="text-[11px] font-bold text-[#FF6B00] hover:underline"
+                        className="text-[11px] font-bold text-amber-700 hover:underline"
                       >
                         Forgot Password?
                       </button>
@@ -371,7 +371,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/10 focus:outline-hidden text-gray-900 font-medium transition-all"
+                        className="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-[#FFCD00] focus:ring-2 focus:ring-[#FFCD00]/20 focus:outline-hidden text-gray-900 font-medium transition-all"
                       />
                       <button
                         type="button"
@@ -386,11 +386,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#FF6B00] to-[#FF8500] hover:from-[#FF5500] hover:to-[#FF7700] text-white font-extrabold text-xs rounded-2xl shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                    className="w-full py-3 px-4 bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] font-black text-xs rounded-2xl shadow-md border border-amber-300 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin text-[#0B0B0B]" />
                         <span>Signing in...</span>
                       </>
                     ) : (
@@ -409,7 +409,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                         setEmailSubView('register');
                         clearFeedback();
                       }}
-                      className="font-black text-[#FF6B00] hover:underline cursor-pointer"
+                      className="font-black text-[#0B0B0B] underline cursor-pointer"
                     >
                       Create Account
                     </button>
@@ -517,11 +517,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#FF6B00] to-[#FF8500] hover:from-[#FF5500] hover:to-[#FF7700] text-white font-extrabold text-xs rounded-2xl shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                    className="w-full py-3 px-4 bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] font-black text-xs rounded-2xl shadow-md border border-amber-300 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin text-[#0B0B0B]" />
                         <span>Creating Account...</span>
                       </>
                     ) : (
@@ -540,7 +540,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                         setEmailSubView('login');
                         clearFeedback();
                       }}
-                      className="font-black text-[#FF6B00] hover:underline cursor-pointer"
+                      className="font-black text-[#0B0B0B] underline cursor-pointer"
                     >
                       Sign In
                     </button>
@@ -679,11 +679,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#FF6B00] to-[#FF8500] hover:from-[#FF5500] hover:to-[#FF7700] text-white font-extrabold text-xs rounded-2xl shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                    className="w-full py-3 px-4 bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] font-black text-xs rounded-2xl shadow-md border border-amber-300 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin text-[#0B0B0B]" />
                         <span>Sending OTP...</span>
                       </>
                     ) : (
@@ -766,11 +766,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#FF6B00] to-[#FF8500] hover:from-[#FF5500] hover:to-[#FF7700] text-white font-extrabold text-xs rounded-2xl shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                    className="w-full py-3 px-4 bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] font-black text-xs rounded-2xl shadow-md border border-amber-300 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin text-[#0B0B0B]" />
                         <span>Verifying OTP...</span>
                       </>
                     ) : (
@@ -791,9 +791,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
               <button
                 type="button"
                 onClick={onContinueAsGuest}
-                className="text-xs font-bold text-gray-500 hover:text-[#0A192F] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-xs font-bold text-gray-500 hover:text-[#0B0B0B] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ShoppingBag className="w-3.5 h-3.5 text-[#FF6B00]" />
+                <ShoppingBag className="w-3.5 h-3.5 text-amber-600" />
                 <span>Explore Groceries as Guest →</span>
               </button>
             </div>

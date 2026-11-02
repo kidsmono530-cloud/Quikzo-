@@ -409,7 +409,7 @@ function MainAppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF8EF] text-[#202824] flex flex-col antialiased font-sans">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#F8F9FA] text-[#111827] flex flex-col antialiased font-sans">
       {/* Customer Header - No admin buttons */}
       <Header
         onOpenLocationModal={() => setIsLocationModalOpen(true)}
@@ -427,7 +427,7 @@ function MainAppContent() {
       />
 
       {/* Main Customer Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-5 lg:px-6 py-2.5 sm:py-4 pb-24">
         {customerTab === 'home' && (
           <HomeView
             banners={banners}

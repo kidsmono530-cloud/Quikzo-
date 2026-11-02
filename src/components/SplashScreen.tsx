@@ -41,12 +41,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center select-none overflow-hidden transition-opacity duration-300 ${
         fadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
-      style={{ backgroundColor: '#FFF8EF' }}
+      style={{ backgroundColor: '#FFCD00' }}
       aria-label="Quikzo Loading Screen"
     >
       {/* Centered vertical brand group */}
       <div className="flex flex-col items-center text-center px-6 max-w-sm w-full">
-        {/* 1. Quikzo App Icon matching user reference image */}
+        {/* 1. Quikzo App Icon */}
         <div
           className={`relative transition-all duration-700 ease-out transform ${
             stage === 'animated'
@@ -54,7 +54,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               : 'opacity-0 scale-[0.82] translate-y-2'
           }`}
         >
-          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-2xl shadow-[#159F83]/15 bg-[#DDF4EA] flex items-center justify-center p-0.5 border border-[#159F83]/20">
+          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-2xl shadow-black/15 bg-[#FFCD00] flex items-center justify-center p-1 border-4 border-[#0B0B0B]">
             <img
               src={quikzoAppIcon}
               alt="Quikzo Icon"
@@ -64,7 +64,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           </div>
         </div>
 
-        {/* 2. Bold modern typography for "Quikzo" matching brand reference */}
+        {/* 2. Bold modern typography for Quikzo */}
         <div
           className={`mt-6 flex items-center justify-center transition-all duration-700 ease-out delay-200 transform ${
             stage === 'animated'
@@ -72,15 +72,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               : 'opacity-0 translate-y-3'
           }`}
         >
-          <div className="flex items-center font-black tracking-tight text-4xl sm:text-5xl text-[#202824] leading-none">
+          <div className="flex items-center font-black tracking-tight text-4xl sm:text-5xl text-[#0B0B0B] leading-none">
             <span>Quik</span>
-            <span className="bg-[#159F83] text-white px-2 py-0.5 rounded-lg ml-1 transform -skew-x-6 text-3xl sm:text-4xl inline-block shadow-xs">
+            <span className="bg-[#0B0B0B] text-[#FFCD00] px-2 py-0.5 rounded-lg ml-1 transform -skew-x-6 text-3xl sm:text-4xl inline-block shadow-xs">
               zo
             </span>
           </div>
         </div>
 
-        {/* 3. Tagline: "FAST SHOPPING, FASTER DELIVERY" */}
+        {/* 3. Tagline */}
         <div
           className={`mt-3 transition-all duration-700 ease-out delay-300 transform ${
             stage === 'animated'
@@ -88,7 +88,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               : 'opacity-0 translate-y-2'
           }`}
         >
-          <p className="text-[11px] sm:text-xs font-black tracking-[0.22em] text-[#159F83] uppercase">
+          <p className="text-[11px] sm:text-xs font-black tracking-[0.22em] text-[#0B0B0B]/85 uppercase">
             FAST SHOPPING, FASTER DELIVERY
           </p>
         </div>
@@ -96,19 +96,20 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         {/* Minimal loading dot indicator */}
         <div
           className={`mt-8 flex items-center gap-1.5 transition-opacity duration-500 delay-500 ${
-            stage === 'animated' ? 'opacity-70' : 'opacity-0'
+            stage === 'animated' ? 'opacity-80' : 'opacity-0'
           }`}
         >
-          <span className="w-2 h-2 rounded-full bg-[#159F83] animate-bounce [animation-delay:-0.3s]" />
-          <span className="w-2 h-2 rounded-full bg-[#159F83] animate-bounce [animation-delay:-0.15s]" />
-          <span className="w-2 h-2 rounded-full bg-[#159F83] animate-bounce" />
+          <span className="w-2 h-2 rounded-full bg-[#0B0B0B] animate-bounce [animation-delay:-0.3s]" />
+          <span className="w-2 h-2 rounded-full bg-[#0B0B0B] animate-bounce [animation-delay:-0.15s]" />
+          <span className="w-2 h-2 rounded-full bg-[#0B0B0B] animate-bounce" />
         </div>
       </div>
 
       {/* Bottom subtle safety badge */}
-      <div className="absolute bottom-6 text-center text-[10px] font-extrabold tracking-widest text-[#202824]/60 uppercase">
+      <div className="absolute bottom-6 text-center text-[10px] font-extrabold tracking-widest text-[#0B0B0B]/70 uppercase">
         ⚡ 10-15 Min Grocery Delivery
       </div>
     </div>
   );
 };
+

@@ -13,7 +13,8 @@ import {
   ArrowRight,
   RefreshCw,
   XCircle,
-  PackageCheck
+  PackageCheck,
+  Bike
 } from 'lucide-react';
 
 interface OrdersViewProps {
@@ -44,7 +45,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
 
   useEffect(() => {
     loadData();
-    // Poll orders
+    // Poll orders every 10 seconds for real-time status updates
     const interval = setInterval(loadData, 10000);
     return () => clearInterval(interval);
   }, [user?.id]);
@@ -77,27 +78,28 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
     <div className="space-y-6 max-w-4xl mx-auto pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-black text-[#0B0B0B]">
             My Orders
           </h1>
           <p className="text-xs text-gray-500 mt-0.5">
-            Track live deliveries and view order invoices
+            Track live deliveries and view order history
           </p>
         </div>
         <button
           onClick={loadData}
-          className="p-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl shadow-xs"
+          className="p-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl shadow-2xs transition-colors"
+          title="Refresh orders"
         >
           <RefreshCw className="w-4 h-4" />
         </button>
       </div>
 
       {orders.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-xs">
-          <div className="w-20 h-20 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4">
-            <ShoppingBag className="w-10 h-10 stroke-[1.5]" />
+        <div className="bg-white rounded-3xl p-12 text-center border border-gray-200 shadow-2xs">
+          <div className="w-20 h-20 rounded-full bg-amber-50 text-[#0B0B0B] flex items-center justify-center mx-auto mb-4 border border-amber-200">
+            <ShoppingBag className="w-10 h-10 stroke-[1.75]" />
           </div>
-          <h3 className="font-bold text-gray-900 text-base mb-1">
+          <h3 className="font-black text-[#0B0B0B] text-base mb-1">
             No orders placed yet
           </h3>
           <p className="text-xs text-gray-500 max-w-xs mx-auto mb-5">
@@ -105,7 +107,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
           </p>
           <button
             onClick={onContinueShopping}
-            className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors"
+            className="px-6 py-2.5 bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] font-black text-xs rounded-xl shadow-xs transition-colors border border-amber-300 active:scale-95"
           >
             Start Shopping
           </button>
@@ -113,16 +115,16 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
       ) : (
         <div className="space-y-4">
           {orders.map(order => {
-            const isLive = ['Pending', 'Confirmed', 'Packed', 'Out for Delivery'].includes(order.status);
+            const isLive = ['Pending', 'Confirmed', 'Packed', 'Ready for Pickup', 'Assigned', 'Picked Up', 'Out for Delivery'].includes(order.status);
             return (
               <div
                 key={order.id}
-                className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-xs hover:border-emerald-500 transition-all"
+                className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-2xs hover:border-amber-400 transition-all"
               >
                 {/* Header */}
-                <div className="p-4 sm:p-5 border-b border-gray-100 flex flex-wrap items-center justify-between gap-2 bg-gray-50/50">
+                <div className="p-4 sm:p-5 border-b border-gray-100 flex flex-wrap items-center justify-between gap-2 bg-gray-50/70">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-xs text-gray-950 bg-white border border-gray-200 px-2 py-1 rounded-md">
+                    <span className="font-mono font-black text-xs text-[#0B0B0B] bg-white border border-gray-200 px-2.5 py-1 rounded-lg">
                       {order.id}
                     </span>
                     <span className="text-xs text-gray-400">
@@ -133,18 +135,20 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
                   {/* Status Badge */}
                   <div className="flex items-center gap-1.5">
                     <span
-                      className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
                         order.status === 'Delivered'
                           ? 'bg-emerald-100 text-emerald-800'
                           : order.status === 'Cancelled'
                           ? 'bg-rose-100 text-rose-800'
-                          : order.status === 'Out for Delivery'
-                          ? 'bg-blue-100 text-blue-800 animate-pulse'
-                          : 'bg-amber-100 text-amber-800'
+                          : order.status === 'Out for Delivery' || order.status === 'Picked Up'
+                          ? 'bg-[#FFCD00] text-[#0B0B0B] animate-pulse border border-amber-300'
+                          : 'bg-amber-100 text-[#0B0B0B]'
                       }`}
                     >
                       {order.status === 'Out for Delivery' ? <Truck className="w-3.5 h-3.5" /> : null}
+                      {order.status === 'Assigned' || order.status === 'Picked Up' ? <Bike className="w-3.5 h-3.5" /> : null}
                       {order.status === 'Packed' ? <PackageCheck className="w-3.5 h-3.5" /> : null}
+                      {order.status === 'Delivered' ? <CheckCircle className="w-3.5 h-3.5" /> : null}
                       {order.status}
                     </span>
                   </div>
@@ -158,10 +162,10 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
                         <img
                           src={item.image}
                           alt=""
-                          className="w-10 h-10 object-cover rounded-lg bg-white shrink-0"
+                          className="w-10 h-10 object-cover rounded-lg bg-white shrink-0 border border-gray-100"
                         />
                         <div className="text-xs">
-                          <p className="font-bold text-gray-900 truncate max-w-[120px]">{item.productName}</p>
+                          <p className="font-bold text-[#0B0B0B] truncate max-w-[120px]">{item.productName}</p>
                           <p className="text-[10px] text-gray-500 font-mono">Qty: {item.quantity}</p>
                         </div>
                       </div>
@@ -171,7 +175,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
                   <div className="pt-3 border-t border-gray-100 mt-3 flex flex-wrap items-center justify-between gap-3 text-xs">
                     <div>
                       <span className="text-gray-400 block text-[11px]">Total Paid ({order.paymentMethod})</span>
-                      <span className="text-base font-black text-gray-950 font-mono">
+                      <span className="text-base font-black text-[#0B0B0B] font-mono">
                         {formatINR(order.total)}
                       </span>
                     </div>
@@ -179,7 +183,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleReorder(order)}
-                        className="px-3.5 py-2 border border-gray-200 hover:border-emerald-600 text-gray-700 font-bold rounded-xl transition-colors flex items-center gap-1.5"
+                        className="px-3.5 py-2 border border-gray-200 hover:border-black text-gray-700 font-bold rounded-xl transition-colors flex items-center gap-1.5"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         <span>Reorder</span>
@@ -187,13 +191,13 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
 
                       <button
                         onClick={() => onTrackOrder(order)}
-                        className={`px-4 py-2 text-white font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs ${
+                        className={`px-4 py-2 font-black rounded-xl transition-colors flex items-center gap-1.5 shadow-2xs ${
                           isLive
-                            ? 'bg-emerald-700 hover:bg-emerald-800'
-                            : 'bg-gray-900 hover:bg-gray-800'
+                            ? 'bg-[#FFCD00] hover:bg-[#E5B800] text-[#0B0B0B] border border-amber-300'
+                            : 'bg-[#0B0B0B] hover:bg-gray-800 text-white'
                         }`}
                       >
-                        <span>{isLive ? 'Track Live Order' : 'Order Details'}</span>
+                        <span>{isLive ? 'Track Live Order ⚡' : 'Order Details'}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
